@@ -9,4 +9,5 @@ service DataHash {
   rpc hash_sha256(Text) returns (Text) {};
   rpc hello(Text) returns (Text) {};
   rpc stream_text(Text) returns (stream Text) {}
+  rpc input_stream(stream Text) returns (Text) {}
 }

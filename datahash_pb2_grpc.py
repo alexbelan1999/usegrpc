@@ -34,6 +34,11 @@ class DataHashStub(object):
                 request_serializer=datahash__pb2.Text.SerializeToString,
                 response_deserializer=datahash__pb2.Text.FromString,
                 )
+        self.input_stream = channel.stream_unary(
+                '/DataHash/input_stream',
+                request_serializer=datahash__pb2.Text.SerializeToString,
+                response_deserializer=datahash__pb2.Text.FromString,
+                )
 
 
 class DataHashServicer(object):
@@ -63,6 +68,12 @@ class DataHashServicer(object):
         context.set_details('Method not implemented!')
         raise NotImplementedError('Method not implemented!')
 
+    def input_stream(self, request_iterator, context):
+        """Missing associated documentation comment in .proto file."""
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details('Method not implemented!')
+        raise NotImplementedError('Method not implemented!')
+
 
 def add_DataHashServicer_to_server(servicer, server):
     rpc_method_handlers = {
@@ -83,6 +94,11 @@ def add_DataHashServicer_to_server(servicer, server):
             ),
             'stream_text': grpc.unary_stream_rpc_method_handler(
                     servicer.stream_text,
+                    request_deserializer=datahash__pb2.Text.FromString,
+                    response_serializer=datahash__pb2.Text.SerializeToString,
+            ),
+            'input_stream': grpc.stream_unary_rpc_method_handler(
+                    servicer.input_stream,
                     request_deserializer=datahash__pb2.Text.FromString,
                     response_serializer=datahash__pb2.Text.SerializeToString,
             ),
@@ -155,6 +171,22 @@ class DataHash(object):
             timeout=None,
             metadata=None):
         return grpc.experimental.unary_stream(request, target, '/DataHash/stream_text',
+            datahash__pb2.Text.SerializeToString,
+            datahash__pb2.Text.FromString,
+            options, channel_credentials,
+            call_credentials, compression, wait_for_ready, timeout, metadata)
+
+    @staticmethod
+    def input_stream(request_iterator,
+            target,
+            options=(),
+            channel_credentials=None,
+            call_credentials=None,
+            compression=None,
+            wait_for_ready=None,
+            timeout=None,
+            metadata=None):
+        return grpc.experimental.stream_unary(request_iterator, target, '/DataHash/input_stream',
             datahash__pb2.Text.SerializeToString,
             datahash__pb2.Text.FromString,
             options, channel_credentials,

@@ -16,3 +16,7 @@ def hello(data):
     result = "Your message: " + data + " Time: " + str(datetime.datetime.now())
     return result
 
+
+def hello_person(person, data):
+    result = str(person) + " your message: " + str(data) + " Time: " + str(datetime.datetime.now())
+    return result

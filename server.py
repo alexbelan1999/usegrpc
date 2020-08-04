@@ -41,6 +41,20 @@ class DataHashServicer(datahash_pb2_grpc.DataHashServicer):
         for feature in feature_list:
             yield feature
 
+    def input_stream(self, request_iterator, context):
+        point_count = 0
+        feature_count = 0
+        prev_point = None
+        points = []
+
+        for point in request_iterator:
+            point_count += 1
+            points.append(point.data)
+            prev_point = point
+
+        result = datahash.hello_person(points[0], points[1])
+        return datahash_pb2.Text(data=result)
+
 
 def serve():
     server = grpc.server(futures.ThreadPoolExecutor(max_workers=4))
