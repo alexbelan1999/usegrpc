@@ -39,6 +39,11 @@ class DataHashStub(object):
                 request_serializer=datahash__pb2.Text.SerializeToString,
                 response_deserializer=datahash__pb2.Text.FromString,
                 )
+        self.dual_stream = channel.stream_stream(
+                '/DataHash/dual_stream',
+                request_serializer=datahash__pb2.Text.SerializeToString,
+                response_deserializer=datahash__pb2.Text.FromString,
+                )
 
 
 class DataHashServicer(object):
@@ -74,6 +79,12 @@ class DataHashServicer(object):
         context.set_details('Method not implemented!')
         raise NotImplementedError('Method not implemented!')
 
+    def dual_stream(self, request_iterator, context):
+        """Missing associated documentation comment in .proto file."""
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details('Method not implemented!')
+        raise NotImplementedError('Method not implemented!')
+
 
 def add_DataHashServicer_to_server(servicer, server):
     rpc_method_handlers = {
@@ -99,6 +110,11 @@ def add_DataHashServicer_to_server(servicer, server):
             ),
             'input_stream': grpc.stream_unary_rpc_method_handler(
                     servicer.input_stream,
+                    request_deserializer=datahash__pb2.Text.FromString,
+                    response_serializer=datahash__pb2.Text.SerializeToString,
+            ),
+            'dual_stream': grpc.stream_stream_rpc_method_handler(
+                    servicer.dual_stream,
                     request_deserializer=datahash__pb2.Text.FromString,
                     response_serializer=datahash__pb2.Text.SerializeToString,
             ),
@@ -187,6 +203,22 @@ class DataHash(object):
             timeout=None,
             metadata=None):
         return grpc.experimental.stream_unary(request_iterator, target, '/DataHash/input_stream',
+            datahash__pb2.Text.SerializeToString,
+            datahash__pb2.Text.FromString,
+            options, channel_credentials,
+            call_credentials, compression, wait_for_ready, timeout, metadata)
+
+    @staticmethod
+    def dual_stream(request_iterator,
+            target,
+            options=(),
+            channel_credentials=None,
+            call_credentials=None,
+            compression=None,
+            wait_for_ready=None,
+            timeout=None,
+            metadata=None):
+        return grpc.experimental.stream_stream(request_iterator, target, '/DataHash/dual_stream',
             datahash__pb2.Text.SerializeToString,
             datahash__pb2.Text.FromString,
             options, channel_credentials,

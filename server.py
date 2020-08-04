@@ -55,6 +55,32 @@ class DataHashServicer(datahash_pb2_grpc.DataHashServicer):
         result = datahash.hello_person(points[0], points[1])
         return datahash_pb2.Text(data=result)
 
+    def dual_stream(self, request_iterator, context):
+        point_count = 0
+        feature_count = 0
+        prev_point = None
+        points = []
+
+        for point in request_iterator:
+            point_count += 1
+            points.append(point.data)
+            prev_point = point
+
+        result = []
+        hello = datahash.hello_person(points[0], points[1])
+        hash_md5 = datahash.hash_md5(points[1])
+        sha256 = datahash.hash_sha256(points[1])
+        result.append(hello)
+        result.append(hash_md5)
+        result.append(sha256)
+        feature_list = []
+        for item in result:
+            feature = datahash_pb2.Text(data=item)
+            feature_list.append(feature)
+
+        for feature in feature_list:
+            yield feature
+
 
 def serve():
     server = grpc.server(futures.ThreadPoolExecutor(max_workers=4))

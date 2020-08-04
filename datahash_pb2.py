@@ -19,7 +19,7 @@ DESCRIPTOR = _descriptor.FileDescriptor(
   syntax='proto3',
   serialized_options=None,
   create_key=_descriptor._internal_create_key,
-  serialized_pb=b'\n\x0e\x64\x61tahash.proto\"\x14\n\x04Text\x12\x0c\n\x04\x64\x61ta\x18\x01 \x01(\t2\xa1\x01\n\x08\x44\x61taHash\x12\x1a\n\x08hash_md5\x12\x05.Text\x1a\x05.Text\"\x00\x12\x1d\n\x0bhash_sha256\x12\x05.Text\x1a\x05.Text\"\x00\x12\x17\n\x05hello\x12\x05.Text\x1a\x05.Text\"\x00\x12\x1f\n\x0bstream_text\x12\x05.Text\x1a\x05.Text\"\x00\x30\x01\x12 \n\x0cinput_stream\x12\x05.Text\x1a\x05.Text\"\x00(\x01\x62\x06proto3'
+  serialized_pb=b'\n\x0e\x64\x61tahash.proto\"\x14\n\x04Text\x12\x0c\n\x04\x64\x61ta\x18\x01 \x01(\t2\xc4\x01\n\x08\x44\x61taHash\x12\x1a\n\x08hash_md5\x12\x05.Text\x1a\x05.Text\"\x00\x12\x1d\n\x0bhash_sha256\x12\x05.Text\x1a\x05.Text\"\x00\x12\x17\n\x05hello\x12\x05.Text\x1a\x05.Text\"\x00\x12\x1f\n\x0bstream_text\x12\x05.Text\x1a\x05.Text\"\x00\x30\x01\x12 \n\x0cinput_stream\x12\x05.Text\x1a\x05.Text\"\x00(\x01\x12!\n\x0b\x64ual_stream\x12\x05.Text\x1a\x05.Text\"\x00(\x01\x30\x01\x62\x06proto3'
 )
 
 
@@ -76,7 +76,7 @@ _DATAHASH = _descriptor.ServiceDescriptor(
   serialized_options=None,
   create_key=_descriptor._internal_create_key,
   serialized_start=41,
-  serialized_end=202,
+  serialized_end=237,
   methods=[
   _descriptor.MethodDescriptor(
     name='hash_md5',
@@ -122,6 +122,16 @@ _DATAHASH = _descriptor.ServiceDescriptor(
     name='input_stream',
     full_name='DataHash.input_stream',
     index=4,
+    containing_service=None,
+    input_type=_TEXT,
+    output_type=_TEXT,
+    serialized_options=None,
+    create_key=_descriptor._internal_create_key,
+  ),
+  _descriptor.MethodDescriptor(
+    name='dual_stream',
+    full_name='DataHash.dual_stream',
+    index=5,
     containing_service=None,
     input_type=_TEXT,
     output_type=_TEXT,

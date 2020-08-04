@@ -32,8 +32,8 @@ print("------------------------Request-streaming RPC---------------")
 
 
 def generator(info: list):
-    for item in info:
-        yield item
+    for i in info:
+        yield i
 
 
 name = datahash_pb2.Text(data=person)
@@ -43,3 +43,13 @@ result_list = [name, mesg]
 text_iterator = generator(result_list)
 response = stub.input_stream(text_iterator)
 print(response.data)
+
+print("------------------------Bidirectional streaming RPC---------------")
+name = datahash_pb2.Text(data=person)
+mesg = datahash_pb2.Text(data=text)
+result_list = [name, mesg]
+
+text_iterator = generator(result_list)
+response = stub.dual_stream(text_iterator)
+for resp in response:
+    print(resp.data)
