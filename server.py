@@ -26,13 +26,11 @@ class DataHashServicer(datahash_pb2_grpc.DataHashServicer):
         return response
 
     def stream_text(self, request, context):
-        result = []
         hello = datahash.hello(request.data)
         hash_md5 = datahash.hash_md5(request.data)
         sha256 = datahash.hash_sha256(request.data)
-        result.append(hello)
-        result.append(hash_md5)
-        result.append(sha256)
+        result = [hello, hash_md5, sha256]
+
         feature_list = []
         for item in result:
             feature = datahash_pb2.Text(data=item)
@@ -43,7 +41,6 @@ class DataHashServicer(datahash_pb2_grpc.DataHashServicer):
 
     def input_stream(self, request_iterator, context):
         point_count = 0
-        feature_count = 0
         prev_point = None
         points = []
 
@@ -57,7 +54,6 @@ class DataHashServicer(datahash_pb2_grpc.DataHashServicer):
 
     def dual_stream(self, request_iterator, context):
         point_count = 0
-        feature_count = 0
         prev_point = None
         points = []
 
@@ -66,13 +62,11 @@ class DataHashServicer(datahash_pb2_grpc.DataHashServicer):
             points.append(point.data)
             prev_point = point
 
-        result = []
         hello = datahash.hello_person(points[0], points[1])
         hash_md5 = datahash.hash_md5(points[1])
         sha256 = datahash.hash_sha256(points[1])
-        result.append(hello)
-        result.append(hash_md5)
-        result.append(sha256)
+        result = [hello, hash_md5, sha256]
+
         feature_list = []
         for item in result:
             feature = datahash_pb2.Text(data=item)
@@ -83,7 +77,7 @@ class DataHashServicer(datahash_pb2_grpc.DataHashServicer):
 
 
 def serve():
-    server = grpc.server(futures.ThreadPoolExecutor(max_workers=4))
+    server = grpc.server(futures.ThreadPoolExecutor(max_workers=5))
     datahash_pb2_grpc.add_DataHashServicer_to_server(DataHashServicer(), server)
     print('Starting server on port 64000.')
     server.add_insecure_port('[::]:64000')
@@ -91,7 +85,7 @@ def serve():
 
     try:
         while True:
-            time.sleep(3600)
+            time.sleep(360)
     except KeyboardInterrupt:
         server.stop(0)
 
