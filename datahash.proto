@@ -4,7 +4,12 @@ message Text {
   string data = 1;
 }
 
+message Image {
+  bytes img = 1;
+}
+
 service DataHash {
+  rpc get_image(Text) returns (Image) {};
   rpc hash_md5(Text) returns (Text) {};
   rpc hash_sha256(Text) returns (Text) {};
   rpc hello(Text) returns (Text) {};

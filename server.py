@@ -2,13 +2,20 @@ import time
 from concurrent import futures
 
 import grpc
-
+from matplotlib import pyplot as plt
 import datahash
 import datahash_pb2
 import datahash_pb2_grpc
 
 
 class DataHashServicer(datahash_pb2_grpc.DataHashServicer):
+
+    def get_image(self, request, context):
+        response = datahash_pb2.Image()
+        path = request.data
+        with open(path, 'rb') as image:
+            response.img = bytes(image.read())
+        return response
 
     def hash_md5(self, request, context):
         response = datahash_pb2.Text()

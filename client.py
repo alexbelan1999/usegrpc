@@ -2,6 +2,18 @@ import grpc
 
 import datahash_pb2
 import datahash_pb2_grpc
+from matplotlib import pyplot as plt
+
+
+def get_image(stub, text):
+    path = datahash_pb2.Text(data=text)
+    response = stub.get_image(path)
+    save_path = '/home/alex/PycharmProjects/usegrpc/client_img/icon.jpg'
+    with open(save_path, 'wb') as image:
+        image.write(response.img)
+    img = plt.imread(save_path)
+    plt.imshow(img)
+    plt.show()
 
 
 def simle_rcp(stub, text):
@@ -64,6 +76,8 @@ def client():
         req_stream_rcp(stub, person, text)
         print("------------------------Bidirectional streaming RPC---------------")
         bidirect_stream_rcp(stub, person, text)
+        path = input("Введите путь до файла: ")
+        get_image(stub, path)
 
 
 if __name__ == '__main__':

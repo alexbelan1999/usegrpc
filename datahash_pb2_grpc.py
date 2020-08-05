@@ -14,6 +14,11 @@ class DataHashStub(object):
         Args:
             channel: A grpc.Channel.
         """
+        self.get_image = channel.unary_unary(
+                '/DataHash/get_image',
+                request_serializer=datahash__pb2.Text.SerializeToString,
+                response_deserializer=datahash__pb2.Image.FromString,
+                )
         self.hash_md5 = channel.unary_unary(
                 '/DataHash/hash_md5',
                 request_serializer=datahash__pb2.Text.SerializeToString,
@@ -48,6 +53,12 @@ class DataHashStub(object):
 
 class DataHashServicer(object):
     """Missing associated documentation comment in .proto file."""
+
+    def get_image(self, request, context):
+        """Missing associated documentation comment in .proto file."""
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details('Method not implemented!')
+        raise NotImplementedError('Method not implemented!')
 
     def hash_md5(self, request, context):
         """Missing associated documentation comment in .proto file."""
@@ -88,6 +99,11 @@ class DataHashServicer(object):
 
 def add_DataHashServicer_to_server(servicer, server):
     rpc_method_handlers = {
+            'get_image': grpc.unary_unary_rpc_method_handler(
+                    servicer.get_image,
+                    request_deserializer=datahash__pb2.Text.FromString,
+                    response_serializer=datahash__pb2.Image.SerializeToString,
+            ),
             'hash_md5': grpc.unary_unary_rpc_method_handler(
                     servicer.hash_md5,
                     request_deserializer=datahash__pb2.Text.FromString,
@@ -127,6 +143,22 @@ def add_DataHashServicer_to_server(servicer, server):
  # This class is part of an EXPERIMENTAL API.
 class DataHash(object):
     """Missing associated documentation comment in .proto file."""
+
+    @staticmethod
+    def get_image(request,
+            target,
+            options=(),
+            channel_credentials=None,
+            call_credentials=None,
+            compression=None,
+            wait_for_ready=None,
+            timeout=None,
+            metadata=None):
+        return grpc.experimental.unary_unary(request, target, '/DataHash/get_image',
+            datahash__pb2.Text.SerializeToString,
+            datahash__pb2.Image.FromString,
+            options, channel_credentials,
+            call_credentials, compression, wait_for_ready, timeout, metadata)
 
     @staticmethod
     def hash_md5(request,
