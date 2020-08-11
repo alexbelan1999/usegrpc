@@ -1,8 +1,9 @@
 import time
+import json
 from concurrent import futures
-
+from google.protobuf.json_format import MessageToDict, MessageToJson
 import grpc
-from matplotlib import pyplot as plt
+
 import datahash
 import datahash_pb2
 import datahash_pb2_grpc
@@ -18,7 +19,14 @@ class DataHashServicer(datahash_pb2_grpc.DataHashServicer):
         return response
 
     def hash_md5(self, request, context):
+
         response = datahash_pb2.Text()
+        print(MessageToDict(request))
+        print(MessageToJson(request))
+        json_obj = json.loads(MessageToJson(request))
+
+        with open('data.json', 'w') as file:
+            json.dump(json_obj, file)
         response.data = datahash.hash_md5(request.data)
         return response
 
